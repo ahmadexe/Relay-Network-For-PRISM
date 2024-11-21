@@ -1,6 +1,12 @@
 package data
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
 
 type PrismRelayNetwork struct {
     nodes []string
@@ -22,10 +28,19 @@ func (network *PrismRelayNetwork) RemoveNode(ip string) {
 	}
 }
 
-func (network *PrismRelayNetwork) ViewNode() {
+func (network *PrismRelayNetwork) ViewNodes() {
 	fmt.Println(network.nodes)
 }
 
-func (network *PrismRelayNetwork) GetNode() ([]string) {
+func (network *PrismRelayNetwork) GetNodes() ([]string) {
 	return network.nodes
+}
+
+func (network *PrismRelayNetwork) GetNodeOnRandomIndex(ctx *gin.Context) (string) {
+	if len(network.nodes) == 0 {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "No nodes available"})
+		return ""
+	}	
+
+	return network.nodes[rand.Intn(len(network.nodes))]
 }
