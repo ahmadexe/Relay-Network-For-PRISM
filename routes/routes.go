@@ -6,19 +6,21 @@ import (
 )
 
 type AppRoutes struct {
-	router *gin.Engine
+	router     *gin.Engine
 	controller *controllers.Controller
 }
 
 func InitRouter(c *controllers.Controller, r *gin.Engine) *AppRoutes {
 	return &AppRoutes{
 		controller: c,
-		router: r,
+		router:     r,
 	}
 }
 
 func (r *AppRoutes) InitRoutes() {
-	r.router.Group("/api/v1/relay") 
-	r.router.GET("/rand/node", r.controller.GetRandomNode)	
-	r.router.POST("/add/node/:ip", r.controller.AddNode)
+	router := r.router.Group("/api/v1")
+	{
+		router.GET("/rand/node", r.controller.GetRandomNode)
+		router.POST("/add/:ip", r.controller.AddNode)
+	}
 }
