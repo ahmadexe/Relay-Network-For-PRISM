@@ -19,12 +19,6 @@ func InitRouter(c *controllers.Controller, r *gin.Engine) *AppRoutes {
 
 func (r *AppRoutes) InitRoutes() {
 	r.router.Group("/api/v1/relay") 
-
-	// r.router.HandleFunc("/api/v1/relay", r.controller.GetRelay).Methods("GET")
-	// r.router.HandleFunc("/api/v1/relay", r.controller.CreateRelay).Methods("POST")
-	// r.router.HandleFunc("/api/v1/relay/{id}", r.controller.GetRelayById).Methods("GET")
-	// r.router.HandleFunc("/api/v1/relay/{id}", r.controller.UpdateRelay).Methods("PUT")
-	// r.router.HandleFunc("/api/v1/relay/{id}", r.controller.DeleteRelay).Methods("DELETE")
+	r.router.GET("/rand/node", r.controller.GetRandomNode)	
+	r.router.POST("/add/node/:ip", r.controller.AddNode)
 }
-
-
