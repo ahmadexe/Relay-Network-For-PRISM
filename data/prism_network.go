@@ -44,3 +44,13 @@ func (network *PrismRelayNetwork) GetNodeOnRandomIndex(ctx *gin.Context) (string
 
 	return network.nodes[rand.Intn(len(network.nodes))]
 }
+
+func (network *PrismRelayNetwork) PingNodes() {
+	for _, node := range network.nodes {
+		res, err := http.Get("http://" + node + "/is_alive")
+		if err != nil {
+			network.RemoveNode(node)
+		}
+		defer res.Body.Close()
+	}
+}
