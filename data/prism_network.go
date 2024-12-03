@@ -13,7 +13,7 @@ type PrismRelayNetwork struct {
 }
 
 func InitNetwork() (*PrismRelayNetwork) {
-	return &PrismRelayNetwork{nodes: []string{}}
+	return &PrismRelayNetwork{nodes: []string{"Ahmad", "Rizky", "Fikri"}}
 }
 
 func (network *PrismRelayNetwork) AddNode(ip string) {
@@ -44,13 +44,15 @@ func (network *PrismRelayNetwork) GetNodeOnRandomIndex(ctx *gin.Context) (string
 
 	return network.nodes[rand.Intn(len(network.nodes))]
 }
-
 func (network *PrismRelayNetwork) PingNodes() {
-	for _, node := range network.nodes {
-		res, err := http.Get("http://" + node + "/is_alive")
+	copiedList := make([]string, len(network.nodes))
+	copy(copiedList, network.nodes)
+
+	for _, node := range copiedList {
+		fmt.Println("Pinging node: " + node)
+		_, err := http.Get("http://" + node + "/is_alive")
 		if err != nil {
 			network.RemoveNode(node)
 		}
-		defer res.Body.Close()
 	}
 }
