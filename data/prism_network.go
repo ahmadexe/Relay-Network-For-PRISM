@@ -13,7 +13,7 @@ type PrismRelayNetwork struct {
 }
 
 func InitNetwork() (*PrismRelayNetwork) {
-	return &PrismRelayNetwork{nodes: []string{"Ahmad", "Rizky", "Fikri"}}
+	return &PrismRelayNetwork{nodes: []string{}}
 }
 
 func (network *PrismRelayNetwork) AddNode(ip string) {
