@@ -20,7 +20,7 @@ func main() {
 
 	networkRouter.InitRoutes()
 
-	go network.PingNodes() 
+	network.CheckLife()
 
 	router.Run(":" + configs.Port)
 }

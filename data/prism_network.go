@@ -3,17 +3,21 @@ package data
 import (
 	"fmt"
 	"math/rand"
+	"time"
+
+	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
+
+const REPING_INTERVAL = 10
 
 type PrismRelayNetwork struct {
     nodes []string
 }
 
 func InitNetwork() (*PrismRelayNetwork) {
-	return &PrismRelayNetwork{nodes: []string{}}
+	return &PrismRelayNetwork{nodes: []string{"51.20.70.153", "13.49.80.126"}}
 }
 
 func (network *PrismRelayNetwork) AddNode(ip string) {
@@ -44,6 +48,7 @@ func (network *PrismRelayNetwork) GetNodeOnRandomIndex(ctx *gin.Context) (string
 
 	return network.nodes[rand.Intn(len(network.nodes))]
 }
+
 func (network *PrismRelayNetwork) PingNodes() {
 	copiedList := make([]string, len(network.nodes))
 	copy(copiedList, network.nodes)
@@ -55,4 +60,9 @@ func (network *PrismRelayNetwork) PingNodes() {
 			network.RemoveNode(node)
 		}
 	}
+}
+
+func (network *PrismRelayNetwork) CheckLife() {
+	network.PingNodes()
+	_ = time.AfterFunc(REPING_INTERVAL * time.Second, network.CheckLife)
 }
