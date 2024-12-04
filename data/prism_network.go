@@ -55,7 +55,7 @@ func (network *PrismRelayNetwork) PingNodes() {
 
 	for _, node := range copiedList {
 		fmt.Println("Pinging node: " + node)
-		_, err := http.Get("http://" + node + "/is_alive")
+		_, err := http.Get("http://" + node + ":10111/" + "/is_alive")
 		if err != nil {
 			network.RemoveNode(node)
 		}
