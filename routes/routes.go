@@ -22,5 +22,6 @@ func (r *AppRoutes) InitRoutes() {
 	{
 		router.GET("/rand/node", r.controller.GetRandomNode)
 		router.POST("/add/:ip", r.controller.AddNode)
+		router.GET("/nodes", r.controller.GetAllNodes)
 	}
 }

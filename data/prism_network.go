@@ -49,6 +49,10 @@ func (network *PrismRelayNetwork) GetNodeOnRandomIndex(ctx *gin.Context) (string
 	return network.nodes[rand.Intn(len(network.nodes))]
 }
 
+func (network *PrismRelayNetwork) GetAllNodes(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{"nodes": network.nodes})
+}
+
 func (network *PrismRelayNetwork) PingNodes() {
 	copiedList := make([]string, len(network.nodes))
 	copy(copiedList, network.nodes)

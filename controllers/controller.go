@@ -33,3 +33,7 @@ func (controller *Controller) AddNode(ctx *gin.Context) {
 	controller.network.AddNode(ip)
 	ctx.JSON(http.StatusOK, gin.H{"message": "Node added"})
 }
+
+func (controller *Controller) GetAllNodes(ctx *gin.Context) {
+	controller.network.GetAllNodes(ctx)
+}
