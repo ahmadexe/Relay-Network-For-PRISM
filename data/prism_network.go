@@ -13,21 +13,30 @@ import (
 const REPING_INTERVAL = 10
 
 type PrismRelayNetwork struct {
-    nodes []string
+	nodes []string
 }
 
-func InitNetwork() (*PrismRelayNetwork) {
+func InitNetwork() *PrismRelayNetwork {
 	return &PrismRelayNetwork{nodes: []string{}}
 }
 
 func (network *PrismRelayNetwork) AddNode(ip string) {
-    network.nodes = append(network.nodes, ip)
+	var contains bool
+	for _, node := range network.nodes {
+		if node == ip {
+			contains = true
+		}
+	}
+
+	if !contains {
+		network.nodes = append(network.nodes, ip)
+	}
 }
 
 func (network *PrismRelayNetwork) RemoveNode(ip string) {
 	for i, v := range network.nodes {
 		if v == ip {
-			network.nodes = append(network.nodes[:i], network.nodes[i + 1:]...)
+			network.nodes = append(network.nodes[:i], network.nodes[i+1:]...)
 		}
 	}
 }
@@ -36,15 +45,15 @@ func (network *PrismRelayNetwork) ViewNodes() {
 	fmt.Println(network.nodes)
 }
 
-func (network *PrismRelayNetwork) GetNodes() ([]string) {
+func (network *PrismRelayNetwork) GetNodes() []string {
 	return network.nodes
 }
 
-func (network *PrismRelayNetwork) GetNodeOnRandomIndex(ctx *gin.Context) (string) {
+func (network *PrismRelayNetwork) GetNodeOnRandomIndex(ctx *gin.Context) string {
 	if len(network.nodes) == 0 {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "No nodes available"})
 		return ""
-	}	
+	}
 
 	return network.nodes[rand.Intn(len(network.nodes))]
 }
@@ -68,5 +77,5 @@ func (network *PrismRelayNetwork) PingNodes() {
 
 func (network *PrismRelayNetwork) CheckLife() {
 	network.PingNodes()
-	_ = time.AfterFunc(REPING_INTERVAL * time.Second, network.CheckLife)
+	_ = time.AfterFunc(REPING_INTERVAL*time.Second, network.CheckLife)
 }
